@@ -8,7 +8,7 @@ Table::Table(){
 void Table::display() {
 	for (int i = 0; i < ROWS; i++)
 		for (int j = 0; j < COLS; j++) {
-			drawBox(i, j);
+			DrawBox(i+1, j+1);
 		}
 }
 
@@ -17,5 +17,5 @@ void Table::draw(short i, short j, short value) {
 	char chess;
 	if (value == 1) chess = 'X';
 	else if (value == 2) chess = 'O';
-	drawChess(i, j, chess);
+	DrawChess(i, j, chess);
 }

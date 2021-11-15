@@ -33,20 +33,20 @@ void SetScreenBufferSize(SHORT width, SHORT height)
 
 	SetConsoleScreenBufferSize(hStdout, NewSize);
 }
-void gotoXY(short col, short row) {
+void GotoXY(short col, short row) {
 	HANDLE hConsoleOutput;
 	COORD Cursor_an_Pos = { col, row };
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	SetConsoleCursorPosition(hConsoleOutput, Cursor_an_Pos);
 }
-int getX() {
+short GetX() {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO screen_buffer_info;
 	GetConsoleScreenBufferInfo(hConsoleOutput, &screen_buffer_info);
 	return screen_buffer_info.dwCursorPosition.X;
 }
-int getY() {
+short GetY() {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO screen_buffer_info;
@@ -64,7 +64,7 @@ int getY() {
 6 = Yellow	14 = Light Yellow
 7 = White	15 = Bright White
 */
-void setColor(WORD color) {
+void SetColor(WORD color) {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -79,7 +79,7 @@ void setColor(WORD color) {
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 
-void setBackgroundColor(WORD color) {
+void SetBackgroundColor(WORD color) {
 	HANDLE hConsoleOutput;
 	hConsoleOutput = GetStdHandle(STD_OUTPUT_HANDLE);
 
@@ -95,19 +95,20 @@ void setBackgroundColor(WORD color) {
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 
-void drawBox(int row, int col) {
+void DrawBox(short row, short col) {
 
-	gotoXY(_LENGTH_HORIZONTAL*col + 1, _LENGTH_VERTICAL*row);
-	cout << "|---|";
-	gotoXY(_LENGTH_HORIZONTAL*col + 1, _LENGTH_VERTICAL*row + 1);
-	cout << "|";
-	gotoXY(_LENGTH_HORIZONTAL*col + 1 + _LENGTH_HORIZONTAL, _LENGTH_VERTICAL*row + 1);
-	cout << "|";
-	gotoXY(_LENGTH_HORIZONTAL*col + 1, _LENGTH_VERTICAL*row + 2);
-	cout << "|---|";
+	int topX = _LENGTH_HORIZONTAL * col;
+	int topY = _LENGTH_VERTICAL * row;
+	//x col, y row
+	GotoXY(topX, topY); cout << "|---|";	//TOP
+	GotoXY(topX, topY + 1); cout << "|";	//LEFT
+	GotoXY(topX + _LENGTH_HORIZONTAL, topY + 1); cout << "|";	//RIGHT
+	GotoXY(topX, topY + 2); cout << "|---|";//BOTTOM
 }
 
-void drawChess(int row, int col, char chess) {
-	gotoXY(_LENGTH_HORIZONTAL*col + 1 + _LENGTH_HORIZONTAL / 2, _LENGTH_VERTICAL*row + 1);
+void DrawChess(short row, short col, char chess) {
+	int topX = _LENGTH_HORIZONTAL * col;
+	int topY = _LENGTH_VERTICAL * row;
+	GotoXY(topX + _LENGTH_HORIZONTAL / 2, topY + 1);
 	cout << chess;
 }

@@ -15,12 +15,14 @@ class Matrix
 	
 private:
 	int **v;
-	myStatus _status = NONE;
 	int rows, cols;
+
+	myStatus _status = NONE;
 public:
 	
 	Matrix();
-	Matrix(int r, int c);
+	//khoi tao mang r hang c cot, chua toan gia tri NULL
+	Matrix(short r, short c);
 	Matrix(Matrix &a);
 	~Matrix();
 

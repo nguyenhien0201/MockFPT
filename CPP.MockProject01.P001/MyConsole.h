@@ -16,18 +16,28 @@ void SetWindowSize(SHORT width, SHORT height);
 //kich thuoc man hinh dem
 void SetScreenBufferSize(SHORT width, SHORT height);
 //di con tro den vi tri x, y // go to cot x dong y
-void gotoXY(short col, short row);
+void GotoXY(short col, short row);
 //tra ve hoanh do con tro console hien tai
-int getX();
+short GetX();
 //tra ve tung do con tro console hien tai
-int getY();
+short GetY();
 
 //doi mau chu
-void setColor(WORD color);
+/*
+0 = Black	8 = Gray
+1 = Blue	9 = Light Blue
+2 = Green	10 = Light Green
+3 = Aqua	11 = Light Aqua
+4 = Red		12 = Light Red
+5 = Purple	13 = Light Purple
+6 = Yellow	14 = Light Yellow
+7 = White	15 = Bright White
+*/
+void SetColor(WORD color);
 //doi mau nen console
-void setBackgroundColor(WORD color);
+void SetBackgroundColor(WORD color);
 //ve o co
-void drawBox(int row, int col);
+void DrawBox(short row, short col);
 //ve 1 quan co tai row col
-void drawChess(int row, int col, char chess);
+void DrawChess(short row, short col, char chess);
 

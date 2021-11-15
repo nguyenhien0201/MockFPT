@@ -17,9 +17,8 @@ Matrix::Matrix()
 			cin >> v[i][j];
 		}
 }
-Matrix::Matrix(int r, int c)
+Matrix::Matrix(short r, short c)
 {
-
 	rows = r; cols = c;
 	v = new int *[rows];
 	for (int i = 0; i < rows; i++)
@@ -52,13 +51,13 @@ void Matrix::copy(Matrix a) {
 		for (int j = 0; j < a.cols; j++)
 			v[i][j] = a.v[i][j];
 	//cap nhat trang thai, value changed
-	_status = VALUE_CHANGED;
+	//_status = VALUE_CHANGED;
 }
 void Matrix::add(short i, short j, short value) {
 	if (i < rows && j < cols) {
 		v[i][j] = value;
 		//cap nhat trang thai value changed
-		_status = VALUE_CHANGED;
+		//_status = VALUE_CHANGED;
 	}
 		
 }
@@ -74,7 +73,7 @@ void Matrix::display()
 
 Matrix operator + (Matrix a, Matrix b)
 {
-	int i, j;
+	short i, j;
 	Matrix c = a;
 	for (i = 0; i < a.rows; i++)
 		for (j = 0; j < a.cols; j++)
