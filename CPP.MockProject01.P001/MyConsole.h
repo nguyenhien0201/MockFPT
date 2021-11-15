@@ -40,4 +40,5 @@ void SetBackgroundColor(WORD color);
 void DrawBox(short row, short col);
 //ve 1 quan co tai row col
 void DrawChess(short row, short col, char chess);
-
+//xoa 1 khu vuc rong rows, cols bat dau tu toa do topX topY
+void DeleteArea(short rows, short cols, short topX, short topY);

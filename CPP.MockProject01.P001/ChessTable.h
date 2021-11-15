@@ -5,7 +5,7 @@
 
 #define ROWS 10
 #define COLS 10
-
+#define CONDITION_WIN 3
 using namespace std;
 #pragma once
 //class ban co, cung cap function de cap nhat currentstatus
@@ -31,5 +31,7 @@ public:
 	void gotoBox(short row, short col);
 	//them 1 trang thai x row, y col, ve 1 quan co
 	void draw(short x, short y, short value);
+	//x y la toa do vua duoc chon 
+	int checkWin(Matrix* m, int x, int y);
 };
 

@@ -112,3 +112,13 @@ void DrawChess(short row, short col, char chess) {
 	GotoXY(topX + _LENGTH_HORIZONTAL / 2, topY + 1);
 	cout << chess;
 }
+
+void DeleteArea(short rows, short cols, short topX, short topY) {
+	SetColor(0);
+	for (short i = 0; i < rows; i++)
+		for (short j = 0; j < cols; j++)
+		{
+			GotoXY(j + topX, i + topY);
+			cout << "E";
+		}
+}

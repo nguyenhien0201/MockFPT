@@ -26,12 +26,13 @@ void ChessTable::display() {
 
 void ChessTable::draw(short i, short j, short value) {
 	//value = 1 : X      value = 2: O
-	if (status->value[i][j] != NULL) {
+	if (status->value[i][j] == NULL) {
 		char chess;
 		if (value == 1) chess = 'X';
 		else if (value == 2) chess = 'O';
-		status->add(i, j, value);
-		DrawChess(i, j, chess);
+		status->add(i , j , value);
+		//ve le ban co
+		DrawChess(i + m_X, j + m_Y, chess);
 	}
 	else {
 		//BAO LOI 
@@ -40,5 +41,111 @@ void ChessTable::draw(short i, short j, short value) {
 void ChessTable::gotoBox(short row, short col) {
 	short topX = _LENGTH_HORIZONTAL * col;
 	short topY = _LENGTH_VERTICAL * row;
-	GotoXY(topX, topY + 1);
+	GotoXY(topX + m_X, topY + m_Y + 1);
+}
+
+
+// 1: player 1; 2:player 2; 0: chua co ai thang
+//Kiem tra ai thang
+int playerWin(int count, short v) {
+	if (count == CONDITION_WIN) return v;
+	else return 0;
+}
+
+//Kiem tra thang theo hang
+int horizontalWin(Matrix* m, int x, int y) {
+	//left count, right count
+	int lcount = 0, rcount = 0;
+
+	for (int j = y + 1; j < COLS; j++) {
+		if (m->value[x][j] == m->value[x][y]) rcount++;
+	}
+
+	for (int j = y - 1; j >= 0; j--) {
+		if (m->value[x][j] == m->value[x][y]) lcount++;
+	}
+
+	return playerWin(rcount + lcount, m->value[x][y]);
+}
+
+//Kiem tra thang theo cot
+int verticalWin(Matrix* m, int x, int y) {
+	//up count, down count
+	int ucount = 0, dcount = 0;
+
+	for (int i = x + 1; i < ROWS; i++) {
+		if (m->value[i][y] == m->value[x][y]) dcount++;
+	}
+
+	for (int i = x - 1; i >= 0; i--) {
+		if (m->value[i][y] == m->value[x][y]) ucount++;
+	}
+
+	return playerWin(ucount + dcount, m->value[x][y]);
+}
+
+//Kiem tra thang theo duong cheo chinh
+int mDiagonalWin(Matrix* m, int x, int y) {
+	//left up, right down
+	int lucount = 0, rdcount = 0;
+
+	for (int i = x + 1; i < ROWS; i++) {
+		for (int j = y + 1; j < COLS; j++) {
+			if (j - y == i - x) {
+				if (m->value[i][j] == m->value[x][y]) rdcount++;
+			}
+			else continue;
+		}
+	}
+
+	for (int i = x - 1; i >= 0; i--) {
+		for (int j = y - 1; j >= 0; j--) {
+			if (y - j == x - i) {
+				if (m->value[i][j] == m->value[x][y]) lucount++;
+			}
+			else continue;
+		}
+	}
+
+	return playerWin(rdcount + lucount, m->value[x][y]);
+}
+
+//Kiem tra thang theo duong cheo phu
+int aDiagonalWin(Matrix* m, int x, int y) {
+	//right up, left down
+	int rucount = 0, ldcount = 0;
+
+	for (int i = x + 1; i < ROWS; i++) {
+		for (int j = y - 1; j >= 0; j--) {
+			if (y - j == i - x) {
+				if (m->value[i][j] == m->value[x][y]) rucount++;
+			}
+			else continue;
+		}
+	}
+
+	for (int i = x - 1; i >= 0; i--) {
+		for (int j = y + 1; j < COLS; j++) {
+			if (j - y == x - i) {
+				if (m->value[i][j] == m->value[x][y]) ldcount++;
+			}
+			else continue;
+		}
+	}
+
+	return playerWin(rucount + ldcount, m->value[x][y]);
+}
+
+int ChessTable::checkWin(Matrix* m, int x, int y) {
+	int hw = horizontalWin(m, x, y);
+	int vw = verticalWin(m, x, y);
+	int mdw = mDiagonalWin(m, x, y);
+	int adw = aDiagonalWin(m, x, y);
+
+	if (hw) return hw;
+	if (vw) return vw;
+	if (mdw) return mdw;
+	if (adw) return adw;
+
+	return 0;
 }

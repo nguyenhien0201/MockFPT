@@ -19,15 +19,29 @@ void menu(WORD color) {
 }
 int main()
 {
-	menu(0);
+	menu(2);
+	DeleteArea(6, 40, 0, 0);
 	SetColor(6);
 	//ve ban co tai o 1,1 // o la box
-	ChessTable chessTable(1,1);
+	ChessTable chessTable(1, 1);
 	chessTable.display();
 	SetColor(12);
-	//chessTable.draw(3, 3, 1);
+	//luu lai vi tri de in ra guild khac
+	short x = GetX();
+	short y = GetY();
+	chessTable.draw(0, 2, 1);
 	//chessTable.draw(3, 3, 2);
-	
+	chessTable.draw(0, 3, 2);
+	chessTable.draw(1, 1, 1);
+	chessTable.draw(1, 0, 2);
+	chessTable.draw(2, 0, 1);
+	chessTable.draw(1, 2, 2);
+	chessTable.draw(2, 2, 1);
+	chessTable.draw(2, 1, 2);
+	chessTable.draw(3, 2, 1);
+	chessTable.draw(3, 0, 2);
+	GotoXY(x - 1, y + 1);
+	cout << chessTable.checkWin(chessTable.status, 3, 0);;
 	_getch();
 	return 0;
 }
