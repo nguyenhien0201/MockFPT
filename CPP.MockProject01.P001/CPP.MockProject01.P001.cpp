@@ -4,9 +4,9 @@
 #include <conio.h>
 
 #include "MyConsole.h"
-#include "Table.h"
-
+#include "ChessTable.h"
 using namespace std;
+
 void menu(WORD color) {
 	SetColor(color);
 	cout << "*--------------MAIN MENU------------*" << endl;
@@ -21,7 +21,9 @@ int main()
 {
 	menu(0);
 	SetColor(6);
-	Table chessTable;
+	//ve ban co tai o 1,1 // o la box
+	ChessTable chessTable(1,1);
+	chessTable.display();
 	SetColor(12);
 	//chessTable.draw(3, 3, 1);
 	//chessTable.draw(3, 3, 2);

@@ -155,13 +155,13 @@
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MyConsole.cpp" />
     <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Table.cpp" />
+    <ClCompile Include="ChessTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MyConsole.h" />
     <ClInclude Include="Player.h" />
-    <ClInclude Include="Table.h" />
+    <ClInclude Include="ChessTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

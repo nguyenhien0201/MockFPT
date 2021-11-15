@@ -14,12 +14,10 @@ class Matrix
 	};
 	
 private:
-	int **v;
 	int rows, cols;
-
 	myStatus _status = NONE;
 public:
-	
+	int **value;
 	Matrix();
 	//khoi tao mang r hang c cot, chua toan gia tri NULL
 	Matrix(short r, short c);
@@ -29,7 +27,7 @@ public:
 	//copy value of a to this
 	void copy(Matrix a);
 	//add value in maxtrix[row][col]
-	void add(short row, short col, short value);
+	void add(short row, short col, short v);
 	//print value of matrix
 	void display();
 	friend Matrix operator + (Matrix a, Matrix b);
