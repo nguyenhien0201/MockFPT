@@ -94,7 +94,11 @@ void SetBackgroundColor(WORD color) {
 
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
-
+void GotoBox(short r, short c) {
+	short topX = _LENGTH_HORIZONTAL * c ;
+	short topY = _LENGTH_VERTICAL * r ;
+	GotoXY(topX + _LENGTH_HORIZONTAL / 2, topY);
+}
 void DrawBox(short row, short col) {
 
 	int topX = _LENGTH_HORIZONTAL * col;
@@ -121,4 +125,9 @@ void DeleteArea(short rows, short cols, short topX, short topY) {
 			GotoXY(j + topX, i + topY);
 			cout << "E";
 		}
+}
+
+void coutWithColor(string input, WORD color) {
+	SetColor(color);
+	cout << input;
 }

@@ -138,6 +138,16 @@ int aDiagonalWin(Matrix* m, int x, int y) {
 	return playerWin(rucount + ldcount, m->value[x][y]);
 }
 
+
+bool isFull(Matrix* m) {
+	for(int i = 0; i < ROWS; i++)
+		for (int j = 0; j < COLS; j++) {
+			if (m->value[i][j] == NULL) return false;
+		}
+
+	return true;
+}
+
 int ChessTable::checkWin(Matrix* m, int x, int y) {
 	int hw = horizontalWin(m, x, y);
 	int vw = verticalWin(m, x, y);
@@ -148,6 +158,8 @@ int ChessTable::checkWin(Matrix* m, int x, int y) {
 	if (vw) return vw;
 	if (mdw) return mdw;
 	if (adw) return adw;
+	//van hoa
+	if (isFull(m)) return 0;
 
-	return 0;
+	return NULL;
 }

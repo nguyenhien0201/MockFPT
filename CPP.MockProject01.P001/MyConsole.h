@@ -1,4 +1,4 @@
-#include <string.h>
+#include <string>
 #include <iostream>
 #include <windows.h>
 #define _LENGTH_HORIZONTAL 4
@@ -37,9 +37,12 @@ void SetColor(WORD color);
 void SetBackgroundColor(WORD color);
 //ve o co
 void DrawBox(short row, short col);
-
+//di den o r,c
+void GotoBox(short r, short c);
 //ve 1 quan co tai row col
 void DrawChess(short row, short col, char chess);
 
-//xoa bat dau tu toa do topX topY
+//xoa r hang,c cot bat dau tu toa do topX topY
 void DeleteArea(short rows, short cols, short topX, short topY);
+
+void coutWithColor(string input, WORD color);

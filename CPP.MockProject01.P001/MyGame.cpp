@@ -1,4 +1,6 @@
 #include "MyGame.h"
+#include "ChessTable.h"
+#include "MyConsole.h"
 
 void MyGame::Menu(WORD color) {
 	/*SetColor(color);
@@ -73,14 +75,32 @@ void MyGame::Start() {
 void playWithPlayer() {
 	int turn = 1;
 	int x = 0, y = 0;
+	short current_point_x, current_point_y;
+
+	coutWithColor("Player 1 = X\n", 12);
+	coutWithColor("Player 2 = O", 11);
 
 	SetColor(6);
-	ChessTable chessTable(1, 1);
+
+	ChessTable chessTable(2, 1);
 	chessTable.display();
 	do {
-		cout << endl;
-		cout << "Player " << turn << "'s turn: "; cin >> x >> y;
+		chessTable.gotoChessBox(10, 0);
 
+		cout << endl;
+		if (turn == 1) SetColor(12);
+		else SetColor(11);
+		cout << "Player " << turn << "'s turn: ";
+		current_point_x = GetX();
+		current_point_y = GetY();
+		cin >> x >> y;
+
+		DeleteArea(1, 3, current_point_x, current_point_y);
+
+		SetColor(6);
 		chessTable.draw(x, y, turn);
+
+		if (turn == 1) turn++;
+		else turn--;
 	} while (chessTable.checkWin(chessTable.status, x, y) == 0);
 }

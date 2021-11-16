@@ -6,6 +6,7 @@
 #define ROWS 10
 #define COLS 10
 #define CONDITION_WIN 3
+
 using namespace std;
 #pragma once
 //quan ly ban co
@@ -31,9 +32,14 @@ public:
 	*/
 	short draw(short r, short c, short value); 
 	
-	// (r c) la toa do vua duoc chon 
-	// 1: player 1; 2:player 2; 0: chua co ai thang
-	int checkWin(Matrix* m, int r, int c);
+	
+	/*
+	NULL: tiep tuc choi
+	0: hoa
+	1: player 1 win;
+	2: player 2 win;
+	*/
+	int checkWin(Matrix* m, int x, int y);// (x y) la toa do vua duoc chon 
 
 	bool draw(Matrix& currentStatus);
 };

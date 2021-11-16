@@ -5,6 +5,8 @@
 
 #include "MyConsole.h"
 #include "ChessTable.h"
+#include "MyGame.h"
+
 using namespace std;
 
 void menu(WORD color) {
@@ -19,32 +21,8 @@ void menu(WORD color) {
 }
 int main()
 {
-	menu(2);
-	DeleteArea(6, 40, 0, 0);
-	SetColor(6);
+	MyGame* game = new MyGame();
+	game->Start();
 
-	ChessTable chessTable(1, 1);
-	chessTable.display();
-	SetColor(12);
-	//luu lai vi tri de in ra guild khac
-	short x = GetX();
-	short y = GetY();
-	/*chessTable.draw(0, 2, 1);
-	chessTable.draw(0, 3, 2);
-	chessTable.draw(1, 1, 1);
-	chessTable.draw(1, 0, 2);
-	chessTable.draw(2, 0, 1);
-	chessTable.draw(1, 2, 2);
-	chessTable.draw(2, 2, 1);
-	chessTable.draw(2, 1, 2);
-	chessTable.draw(3, 2, 1);
-	chessTable.draw(3, 0, 2);*/
-
-	/*GotoXY(x - 1, y + 1);
-	cout << chessTable.checkWin(chessTable.status, 3, 0);*/
-	chessTable.gotoChessBox(0, 1);
-	cout << "E";
-	_getch();
 	return 0;
 }
-
