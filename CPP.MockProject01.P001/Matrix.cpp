@@ -45,21 +45,23 @@ Matrix::~Matrix()
 		delete value[i];
 	delete value;
 }
-
+short Matrix::getValue(short i, short j) {
+	if (check(i, j)) {
+		return value[i][j];
+	}
+	else {
+		return -1; // loi truy cap ngoai ma tran da khoi tao
+	}
+}
 void Matrix::copy(Matrix a) {
 	for (int i = 0; i < a.rows; i++)
 		for (int j = 0; j < a.cols; j++)
 			value[i][j] = a.value[i][j];
-	//cap nhat trang thai, value changed
-	//_status = VALUE_CHANGED;
 }
 void Matrix::add(short i, short j, short v) {
-	if (i < rows && j < cols) {
+	if (check(i,j)) {
 		value[i][j] = v;
-		//cap nhat trang thai value changed
-		//_status = VALUE_CHANGED;
 	}
-		
 }
 void Matrix::display()
 {

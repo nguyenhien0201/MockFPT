@@ -13,9 +13,8 @@ using namespace std;
 //doi kich thuoc cua so console
 void SetWindowSize(SHORT width, SHORT height);
 
-//kich thuoc man hinh dem
 void SetScreenBufferSize(SHORT width, SHORT height);
-//di con tro den vi tri x, y // go to cot x dong y
+//di con tro den vi tri x, y 
 void GotoXY(short col, short row);
 //tra ve hoanh do con tro console hien tai
 short GetX();
@@ -38,7 +37,9 @@ void SetColor(WORD color);
 void SetBackgroundColor(WORD color);
 //ve o co
 void DrawBox(short row, short col);
+
 //ve 1 quan co tai row col
 void DrawChess(short row, short col, char chess);
-//xoa 1 khu vuc rong rows, cols bat dau tu toa do topX topY
+
+//xoa bat dau tu toa do topX topY
 void DeleteArea(short rows, short cols, short topX, short topY);

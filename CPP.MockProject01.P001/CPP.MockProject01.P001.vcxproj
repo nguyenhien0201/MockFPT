@@ -154,12 +154,14 @@
     <ClCompile Include="CPP.MockProject01.P001.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="MyConsole.cpp" />
+    <ClCompile Include="MyGame.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ChessTable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MyConsole.h" />
+    <ClInclude Include="MyGame.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ChessTable.h" />
   </ItemGroup>
