@@ -73,8 +73,7 @@ int horizontalWin(Matrix* m, int x, int y) {
 	for (int j = y - 1; j >= 0; j--) {
 		if (m->value[x][j] == v) lcount++;
 	}
-	if (rcount + lcount == CONDITION_WIN) return v;
-	return 0;
+	return playerWin(rcount + lcount, m->value[x][y]);
 	//return playerWin(rcount + lcount, m->value[x][y]);
 }
 
@@ -164,7 +163,7 @@ short ChessTable::checkWinner(Matrix* m, short x, short y) {
 	if (isFull(m) && hw == 0 && vw == 0 && mdw == 0 && adw == 0) {
 		return DRAW_GAME;
 	}
-
+	if (hw) return hw;
 	if (vw) return vw;
 	if (mdw) return mdw;
 	if (adw) return adw;

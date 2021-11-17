@@ -26,7 +26,7 @@ public:
 	void playWithPlayer();
 	void playWithBot(short level);
 	void Guild();
-
+	void Test(short level);
 	void saveGame(Matrix* m);
 
 	void displayOldGame(Matrix* m, int i);

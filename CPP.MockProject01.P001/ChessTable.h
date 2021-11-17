@@ -31,15 +31,15 @@ public:
 	
 	bool checkMove(short i, short j);
 	/*
-	NULL: tiep tuc choi
-	0: hoa
+	0: tiep tuc choi
+	3: hoa
 	1: player 1 win;
 	2: player 2 win;
 	*/
 	static short checkWinner(Matrix* m, short x, short y);
 	/*
-	NULL: tiep tuc choi
-	0: hoa
+	0: tiep tuc choi
+	3: hoa
 	1: player 1 win;
 	2: player 2 win;
 	*/

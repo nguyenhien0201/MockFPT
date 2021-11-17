@@ -10,11 +10,9 @@ MyGame::MyGame() {
 void MyGame::Menu(WORD color) {
 	DeleteArea(35, 75, 0, 0);
 
-
 	SetColor(color);
 
 	int c;
-
 	do {
 		GotoXY(0, 0);
 		cout << "*--------------MAIN MENU------------*" << endl;
@@ -86,36 +84,6 @@ void MyGame::Start() {
 	Menu(_Yellow_);
 }
 
-//void playUtil(ChessTable table) {
-//	int turn = 1;
-//	short x = 0, y = 0;
-//	short current_point_x, current_point_y;
-//
-//	GotoXY(0, 0);
-//	coutWithColor("Player 1 = X\n", _Light_Red_);
-//	coutWithColor("Player 2 = O", _Light_Aqua_);
-//	SetColor(_Yellow_);
-//
-//	do {
-//		do {
-//			table.gotoChessBox(11, 0);
-//
-//			short color = turn == 1 ? _Light_Aqua_ : _Light_Red_;
-//			SetColor(color);
-//
-//			cout << "Player " << turn << "'s turn: ";
-//			current_point_x = GetX();
-//			current_point_y = GetY();
-//			cin >> x >> y;
-//			DeleteArea(1, 10, current_point_x, current_point_y);
-//		} while (!table.checkMove(x, y));
-//
-//		SetColor(_Yellow_);
-//		table.draw(x, y, turn);
-//
-//		turn = turn == 1 ? 2 : 1;
-//	} while (table.checkWin(x, y) != -1);
-//}
 void MyGame::playWithPlayer() {
 	DeleteArea(8, 50, 0, 0);
 	GotoXY(0, 0);
@@ -200,30 +168,29 @@ void MyGame::playWithBot(short level) {
 		do {
 			short color = turn == 1 ? _Light_Red_ : _Light_Aqua_;
 			SetColor(color);
+
 			if (turn == 1) {
 				GotoBox(ROWS + 3, 0);
 				current_point_x = GetX();
 				current_point_y = GetY();
-				cout << "Human " << "'s turn: ";
+				cout << "Human's turn: ";
 				cin >> x >> y;
 				DeleteArea(2, 30, current_point_x, current_point_y);
 				SetColor(color);
 			}
 			else {
 				MyBot* bot = new MyBot(level, chessTable.status);
-				bot->generateMove();
-				x = bot->m_move.x;
-				y = bot->m_move.y;
+				bot->bestMove();
+				x = bot->m_x;
+				y = bot->m_y;
 			}
 
 		} while (!chessTable.checkMove(x, y));
 
-
-		//SetColor(_Yellow_);
 		chessTable.draw(x, y, turn);
 
 		turn = turn == 1 ? 2 : 1;
-	} while (chessTable.checkWin(x, y) == NULL);
+	} while (chessTable.checkWin(x, y) == 0);
 
 	saveGame(chessTable.status);
 
@@ -232,13 +199,20 @@ void MyGame::playWithBot(short level) {
 	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
 	if (winer == DRAW_GAME) {
-		cout << "This match is a draw";
+		cout << "This match is a draw" << endl;
 	}
 	else {
-		short color = winer == 1 ? _Light_Aqua_ : _Light_Red_;
+		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
 		SetColor(color);
 
-		cout << "Player " << winer << " win" << endl;
+		if (winer == 1) {
+			cout << "You are win" << endl;
+		}
+		else
+		{
+			cout << "You are lose" << endl;
+		}
+
 	}
 
 	SetColor(_Yellow_);
@@ -282,6 +256,7 @@ void MyGame::displayOldGame(Matrix* m, int index) {
 	ChessTable cb(index * (ROWS + 1) + 1, 2);
 
 	cb.display();
+	SetColor(_White_);
 	cb.draw(m);
 
 	if (index == NUMBER_OF_GAME_REPLAY - 1) {
@@ -299,7 +274,7 @@ void MyGame::displayOldGame(Matrix* m, int index) {
 }
 
 void MyGame::Guild() {
-	DeleteArea(50, 50, 0, 0);
+	DeleteArea(9, 50, 0, 0);
 	GotoXY(0, 0);
 	SetColor(_Yellow_);
 
