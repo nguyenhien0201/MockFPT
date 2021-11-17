@@ -1,6 +1,6 @@
 #include<iostream>
 #include<string>
-
+#define	_ERROR_ -15
 using namespace std;
 
 #pragma once
@@ -24,8 +24,8 @@ public:
 	Matrix(Matrix &a);
 	~Matrix();
 	//
-
-	//return -1 neu truy cap ngoai ma tran
+	short getRows();
+	short getCols();
 	short getValue(short row, short col);
 	//add value in maxtrix[row][col]
 	void add(short row, short col, short v);

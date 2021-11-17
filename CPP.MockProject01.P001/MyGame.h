@@ -5,6 +5,7 @@
 
 #include "ChessTable.h"
 #include "MyConsole.h"
+#include "MyBot.h"
 
 #define NUMBER_OF_GAME_REPLAY 3
 
@@ -23,6 +24,7 @@ public:
 	void End();
 
 	void playWithPlayer();
+	void playWithBot(short level);
 	void Guild();
 
 	void saveGame(Matrix* m);

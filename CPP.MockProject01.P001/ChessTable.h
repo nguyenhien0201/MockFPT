@@ -3,9 +3,10 @@
 #include "Matrix.h" 
 #include"MyConsole.h"
 
-#define ROWS 10
-#define COLS 10
-#define CONDITION_WIN 3
+#define ROWS 3
+#define COLS ROWS
+#define CONDITION_WIN 2
+#define DRAW_GAME 3
 
 using namespace std;
 #pragma once
@@ -29,6 +30,13 @@ public:
 	void draw(short r, short c, short value); 
 	
 	bool checkMove(short i, short j);
+	/*
+	NULL: tiep tuc choi
+	0: hoa
+	1: player 1 win;
+	2: player 2 win;
+	*/
+	static short checkWinner(Matrix* m, short x, short y);
 	/*
 	NULL: tiep tuc choi
 	0: hoa

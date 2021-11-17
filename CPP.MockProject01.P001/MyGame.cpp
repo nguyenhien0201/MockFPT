@@ -9,7 +9,7 @@ MyGame::MyGame() {
 
 void MyGame::Menu(WORD color) {
 	DeleteArea(35, 75, 0, 0);
-	
+
 
 	SetColor(color);
 
@@ -67,10 +67,13 @@ void MyGame::menuPlayWithBOT(WORD color) {
 
 		switch (c) {
 		case 1:
+			playWithBot(_EASY_);
 			break;
 		case 2:
+			playWithBot(_NORMAL_);
 			break;
 		case 3:
+			playWithBot(_HARD_);
 			break;
 		case 4:
 			Menu(6);
@@ -111,7 +114,7 @@ void MyGame::Start() {
 //		table.draw(x, y, turn);
 //
 //		turn = turn == 1 ? 2 : 1;
-//	} while (table.checkWin(x, y) != NULL);
+//	} while (table.checkWin(x, y) != -1);
 //}
 void MyGame::playWithPlayer() {
 	DeleteArea(8, 50, 0, 0);
@@ -128,23 +131,22 @@ void MyGame::playWithPlayer() {
 
 	ChessTable chessTable(2, 1);
 	chessTable.display();
-	
+
 	do {
-		
+
 		do {
-			GotoBox(13, 0);
+			GotoBox(ROWS + 3, 0);
 			current_point_x = GetX();
 			current_point_y = GetY();
-			
+
 			short color = turn == 1 ? _Light_Red_ : _Light_Aqua_;
 			SetColor(color);
 			cout << "Player " << turn << "'s turn: ";
 			cin >> x >> y;
 			DeleteArea(2, 30, current_point_x, current_point_y);
 			SetColor(color);
-		} while (!chessTable.checkMove(x,y));
-		
-		
+		} while (!chessTable.checkMove(x, y));
+
 		//SetColor(_Yellow_);
 		chessTable.draw(x, y, turn);
 
@@ -155,9 +157,81 @@ void MyGame::playWithPlayer() {
 
 	//DeleteArea(50, 50, 0, 0);
 	//GotoXY(0, 0);
-	GotoBox(13, 0);
+	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
-	if (winer == 0) {
+	if (winer == DRAW_GAME) {
+		cout << "This match is a draw" << endl;
+	}
+	else {
+		short color = winer == 1 ? _Light_Aqua_ : _Light_Red_;
+		SetColor(color);
+
+		cout << "Player " << winer << " win" << endl;
+	}
+
+	SetColor(_Yellow_);
+
+	char c;
+	do {
+		cout << "Press 'c' to continue: "; cin >> c;
+	} while (c != 'c');
+
+	Menu(_Yellow_);
+}
+//thuat toan co van de
+void MyGame::playWithBot(short level) {
+	DeleteArea(8, 50, 0, 0);
+	GotoXY(0, 0);
+
+	int turn = 1;
+	short x = 0, y = 0;
+	short current_point_x, current_point_y;
+
+	coutWithColor("=> Human = X\t", _Light_Red_);
+	coutWithColor("Computer = O", _Light_Aqua_);
+
+	SetColor(_Yellow_);
+
+	ChessTable chessTable(2, 1);
+	chessTable.display();
+
+	do {
+
+		do {
+			short color = turn == 1 ? _Light_Red_ : _Light_Aqua_;
+			SetColor(color);
+			if (turn == 1) {
+				GotoBox(ROWS + 3, 0);
+				current_point_x = GetX();
+				current_point_y = GetY();
+				cout << "Human " << "'s turn: ";
+				cin >> x >> y;
+				DeleteArea(2, 30, current_point_x, current_point_y);
+				SetColor(color);
+			}
+			else {
+				MyBot* bot = new MyBot(level, chessTable.status);
+				bot->generateMove();
+				x = bot->m_move.x;
+				y = bot->m_move.y;
+			}
+
+		} while (!chessTable.checkMove(x, y));
+
+
+		//SetColor(_Yellow_);
+		chessTable.draw(x, y, turn);
+
+		turn = turn == 1 ? 2 : 1;
+	} while (chessTable.checkWin(x, y) == NULL);
+
+	saveGame(chessTable.status);
+
+	//DeleteArea(50, 50, 0, 0);
+	//GotoXY(0, 0);
+	GotoBox(ROWS + 3, 0);
+	short winer = chessTable.checkWin(x, y);
+	if (winer == DRAW_GAME) {
 		cout << "This match is a draw";
 	}
 	else {
@@ -166,9 +240,9 @@ void MyGame::playWithPlayer() {
 
 		cout << "Player " << winer << " win" << endl;
 	}
-	
+
 	SetColor(_Yellow_);
-	
+
 	char c;
 	do {
 		cout << "Press 'c' to continue: "; cin >> c;
@@ -176,7 +250,6 @@ void MyGame::playWithPlayer() {
 
 	Menu(_Yellow_);
 }
-
 void copyMatrix(Matrix* a, Matrix* b) {
 	for (int i = 0; i < ROWS; i++) {
 		for (int j = 0; j < COLS; j++) {
@@ -206,14 +279,14 @@ void MyGame::replay() {
 
 void MyGame::displayOldGame(Matrix* m, int index) {
 	SetColor(3 * index + 1);
-	ChessTable cb(index * 11  + 1, 2);
-	
+	ChessTable cb(index * (ROWS + 1) + 1, 2);
+
 	cb.display();
 	cb.draw(m);
 
 	if (index == NUMBER_OF_GAME_REPLAY - 1) {
-		SetColor(6);
-		GotoBox(34, 0);
+		SetColor(_Yellow_);
+		GotoBox(NUMBER_OF_GAME_REPLAY*(ROWS + 1) + 1, 0);
 		char c;
 		do {
 			cout << "Press 'm' to back MAIN MENU: "; cin >> c;

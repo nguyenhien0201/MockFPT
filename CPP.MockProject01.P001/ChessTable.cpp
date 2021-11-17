@@ -25,7 +25,7 @@ void ChessTable::display() {
 }
 bool ChessTable::checkMove(short i, short j) {
 	//khong ton tai o (i,j) hoac da dien roi
-	if (status->getValue(i, j) < 0 || status->getValue(i,j)) return false;
+	if ((status->getValue(i, j) == _ERROR_) || status->getValue(i, j)) return false;
 	return true;
 }
 
@@ -65,16 +65,17 @@ int playerWin(int count, short v) {
 int horizontalWin(Matrix* m, int x, int y) {
 	//left count, right count
 	int lcount = 0, rcount = 0;
-
+	int v = m->value[x][y];
 	for (int j = y + 1; j < COLS; j++) {
-		if (m->value[x][j] == m->value[x][y]) rcount++;
+		if (m->value[x][j] == v) rcount++;
 	}
 
 	for (int j = y - 1; j >= 0; j--) {
-		if (m->value[x][j] == m->value[x][y]) lcount++;
+		if (m->value[x][j] == v) lcount++;
 	}
-
-	return playerWin(rcount + lcount, m->value[x][y]);
+	if (rcount + lcount == CONDITION_WIN) return v;
+	return 0;
+	//return playerWin(rcount + lcount, m->value[x][y]);
 }
 
 //Kiem tra thang theo cot
@@ -154,19 +155,22 @@ bool isFull(Matrix* m) {
 
 	return true;
 }
+short ChessTable::checkWinner(Matrix* m, short x, short y) {
+	int hw = horizontalWin(m, x, y);
+	int vw = verticalWin(m, x, y);
+	int mdw = mDiagonalWin(m, x, y);
+	int adw = aDiagonalWin(m, x, y);
+	
+	if (isFull(m) && hw == 0 && vw == 0 && mdw == 0 && adw == 0) {
+		return DRAW_GAME;
+	}
 
-int ChessTable::checkWin( int x, int y) {
-	int hw = horizontalWin(status, x, y);
-	int vw = verticalWin(status, x, y);
-	int mdw = mDiagonalWin(status, x, y);
-	int adw = aDiagonalWin(status, x, y);
-
-	if (hw) return hw;
 	if (vw) return vw;
 	if (mdw) return mdw;
 	if (adw) return adw;
 	//van hoa
-	if (isFull(status)) return 0;
-
-	return NULL;
+	return 0;
+}
+int ChessTable::checkWin(int x, int y) {
+	return checkWinner(status, x, y);
 }

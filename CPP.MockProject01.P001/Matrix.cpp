@@ -45,12 +45,19 @@ Matrix::~Matrix()
 		delete value[i];
 	delete value;
 }
+
+short Matrix::getRows() {
+	return rows;
+}
+short Matrix::getCols() {
+	return cols;
+}
 short Matrix::getValue(short i, short j) {
 	if (check(i, j)) {
 		return value[i][j];
 	}
 	else {
-		return -1; // loi truy cap ngoai ma tran da khoi tao
+		return _ERROR_; // loi truy cap ngoai ma tran da khoi tao
 	}
 }
 void Matrix::copy(Matrix a) {
