@@ -1,8 +1,26 @@
 #include <string>
 #include <iostream>
 #include <windows.h>
+
 #define _LENGTH_HORIZONTAL 4
 #define _LENGTH_VERTICAL 2
+//MAU
+#define _Black_ 0
+#define _Blue_ 1
+#define _Green_ 2
+#define _Aqua_ 3
+#define _Red_ 4
+#define _Purple_ 5
+#define _Yellow_ 6
+#define _White_ 7
+#define _Gray_ 8
+#define _Light_Blue_ 9
+#define _Light_Green_ 10
+#define _Light_Aqua_ 11
+#define _Light_Red_ 12
+#define _Light_Purple_ 13
+#define _Light_Yellow_ 14
+#define _Bright_White_ 15
 
 using namespace std;
 /*

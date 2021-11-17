@@ -25,22 +25,18 @@ public:
 	void display();
 	
 	void gotoChessBox(short row, short col);
-	/* 
-	 *hop le ->1
-	 *o da duoc chon -> 0	
-	 *toa do nam ngoai ban co -> -1
-	*/
-	short draw(short r, short c, short value); 
+
+	void draw(short r, short c, short value); 
 	
-	
+	bool checkMove(short i, short j);
 	/*
 	NULL: tiep tuc choi
 	0: hoa
 	1: player 1 win;
 	2: player 2 win;
 	*/
-	int checkWin(Matrix* m, int x, int y);// (x y) la toa do vua duoc chon 
+	int checkWin(int x, int y);// (x y) la toa do vua duoc chon 
 
-	bool draw(Matrix& currentStatus);
+	void draw(Matrix* currentStatus);
 };
 

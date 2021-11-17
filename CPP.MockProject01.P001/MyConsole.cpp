@@ -97,7 +97,7 @@ void SetBackgroundColor(WORD color) {
 void GotoBox(short r, short c) {
 	short topX = _LENGTH_HORIZONTAL * c ;
 	short topY = _LENGTH_VERTICAL * r ;
-	GotoXY(topX + _LENGTH_HORIZONTAL / 2, topY);
+	GotoXY(topX, topY);
 }
 void DrawBox(short row, short col) {
 
