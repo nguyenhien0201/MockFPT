@@ -68,10 +68,12 @@ int horizontalWin(Matrix* m, int x, int y) {
 	int v = m->value[x][y];
 	for (int j = y + 1; j < COLS; j++) {
 		if (m->value[x][j] == v) rcount++;
+		else break;
 	}
 
 	for (int j = y - 1; j >= 0; j--) {
 		if (m->value[x][j] == v) lcount++;
+		else break;
 	}
 	return playerWin(rcount + lcount, m->value[x][y]);
 	//return playerWin(rcount + lcount, m->value[x][y]);
@@ -84,10 +86,12 @@ int verticalWin(Matrix* m, int x, int y) {
 
 	for (int i = x + 1; i < ROWS; i++) {
 		if (m->value[i][y] == m->value[x][y]) dcount++;
+		else break;
 	}
 
 	for (int i = x - 1; i >= 0; i--) {
 		if (m->value[i][y] == m->value[x][y]) ucount++;
+		else break;
 	}
 
 	return playerWin(ucount + dcount, m->value[x][y]);
@@ -102,6 +106,7 @@ int mDiagonalWin(Matrix* m, int x, int y) {
 		for (int j = y + 1; j < COLS; j++) {
 			if (j - y == i - x) {
 				if (m->value[i][j] == m->value[x][y]) rdcount++;
+				else break;
 			}
 			else continue;
 		}
@@ -110,7 +115,8 @@ int mDiagonalWin(Matrix* m, int x, int y) {
 	for (int i = x - 1; i >= 0; i--) {
 		for (int j = y - 1; j >= 0; j--) {
 			if (y - j == x - i) {
-				if (m->value[i][j] == m->value[x][y]) lucount++;
+				if (m->value[i][j] == m->value[x][y]) lucount++; 
+				else break;
 			}
 			else continue;
 		}
@@ -128,6 +134,7 @@ int aDiagonalWin(Matrix* m, int x, int y) {
 		for (int j = y - 1; j >= 0; j--) {
 			if (y - j == i - x) {
 				if (m->value[i][j] == m->value[x][y]) rucount++;
+				else break;
 			}
 			else continue;
 		}
@@ -137,6 +144,7 @@ int aDiagonalWin(Matrix* m, int x, int y) {
 		for (int j = y + 1; j < COLS; j++) {
 			if (j - y == x - i) {
 				if (m->value[i][j] == m->value[x][y]) ldcount++;
+				else break;
 			}
 			else continue;
 		}

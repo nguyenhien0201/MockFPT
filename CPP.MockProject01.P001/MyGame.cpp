@@ -131,7 +131,7 @@ void MyGame::playWithPlayer() {
 		cout << "This match is a draw" << endl;
 	}
 	else {
-		short color = winer == 1 ? _Light_Aqua_ : _Light_Red_;
+		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
 		SetColor(color);
 
 		cout << "Player " << winer << " win" << endl;
