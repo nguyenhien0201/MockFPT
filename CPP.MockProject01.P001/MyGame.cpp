@@ -6,8 +6,21 @@ MyGame::MyGame() {
 		replayGames[i] = new Matrix(ROWS, COLS);
 	}
 }
+void MyGame::Start() {
+	mainMenu(_Yellow_);
+}
+void MyGame::endGame() {
+	SetColor(_Yellow_);
 
-void MyGame::Menu(WORD color) {
+	char c;
+	do {
+		cout << "Press 'c' to continue: "; cin >> c;
+	} while (c != 'c');
+
+	mainMenu(_Yellow_);
+}
+
+void MyGame::mainMenu(WORD color) {
 	DeleteArea(35, 75, 0, 0);
 
 	SetColor(color);
@@ -46,7 +59,6 @@ void MyGame::Menu(WORD color) {
 		}
 	} while (c != 6);
 }
-
 void MyGame::menuPlayWithBOT(WORD color) {
 	DeleteArea(8, 50, 0, 0);
 	GotoXY(0, 0);
@@ -74,21 +86,27 @@ void MyGame::menuPlayWithBOT(WORD color) {
 			playWithBot(_HARD_);
 			break;
 		case 4:
-			Menu(6);
+			mainMenu(6);
 			break;
 		}
 	} while (c != 4);
 }
+void MyGame::backMainMenu(bool clean){
+	char c;
+	do {
+		cout << "Press 'm' to back MAIN MENU: "; cin >> c;
+	} while (c != 'm');
+	//DeleteArea(40, 135, 0, 0);
+	if(clean) system("cls");
 
-void MyGame::Start() {
-	Menu(_Yellow_);
+	mainMenu(_Yellow_);
 }
 
 void MyGame::playWithPlayer() {
 	DeleteArea(8, 50, 0, 0);
 	GotoXY(0, 0);
 
-	int turn = 1;
+	short turn = 1;
 	short x = 0, y = 0;
 	short current_point_x, current_point_y;
 
@@ -137,21 +155,14 @@ void MyGame::playWithPlayer() {
 		cout << "Player " << winer << " win" << endl;
 	}
 
-	SetColor(_Yellow_);
-
-	char c;
-	do {
-		cout << "Press 'c' to continue: "; cin >> c;
-	} while (c != 'c');
-
-	Menu(_Yellow_);
+	endGame();
 }
 //thuat toan co van de
 void MyGame::playWithBot(short level) {
 	DeleteArea(8, 50, 0, 0);
 	GotoXY(0, 0);
 
-	int turn = 1;
+	short turn = 1;
 	short x = 0, y = 0;
 	short current_point_x, current_point_y;
 
@@ -176,11 +187,14 @@ void MyGame::playWithBot(short level) {
 				cout << "Human's turn: ";
 				cin >> x >> y;
 				DeleteArea(2, 30, current_point_x, current_point_y);
+				current_point_x = x; current_point_y = y; //luu lai de chuyen vao bot
 				SetColor(color);
 			}
 			else {
 				MyBot* bot = new MyBot(level, chessTable.status);
-				bot->bestMove();
+				bot->previous.x = current_point_x;
+				bot->previous.y = current_point_y;
+				bot->generateMove();
 				x = bot->m_x;
 				y = bot->m_y;
 			}
@@ -194,8 +208,6 @@ void MyGame::playWithBot(short level) {
 
 	saveGame(chessTable.status);
 
-	//DeleteArea(50, 50, 0, 0);
-	//GotoXY(0, 0);
 	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
 	if (winer == DRAW_GAME) {
@@ -204,41 +216,26 @@ void MyGame::playWithBot(short level) {
 	else {
 		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
 		SetColor(color);
-
-		if (winer == 1) {
-			cout << "You are win" << endl;
-		}
-		else
-		{
-			cout << "You are lose" << endl;
-		}
-
+		if (winer == 1) cout << "You are win" << endl;
+		else cout << "You are lose" << endl;
 	}
 
-	SetColor(_Yellow_);
-
-	char c;
-	do {
-		cout << "Press 'c' to continue: "; cin >> c;
-	} while (c != 'c');
-
-	Menu(_Yellow_);
-}
-void copyMatrix(Matrix* a, Matrix* b) {
-	for (int i = 0; i < ROWS; i++) {
-		for (int j = 0; j < COLS; j++) {
-			a->value[i][j] = b->value[i][j];
-		}
-	}
+	endGame();
 }
 
+//void copyMatrix(Matrix* a, Matrix* b) {
+//	for (int i = 0; i < ROWS; i++) {
+//		for (int j = 0; j < COLS; j++) {
+//			a->value[i][j] = b->value[i][j];
+//		}
+//	}
+//}
 void MyGame::saveGame(Matrix* m) {
 	for (int i = NUMBER_OF_GAME_REPLAY - 1; i >= 1; i--) {
-		copyMatrix(replayGames[i], replayGames[i - 1]);
+		Matrix::copyMatrix(replayGames[i], replayGames[i - 1]);
 	}
-	copyMatrix(replayGames[0], m);
+	Matrix::copyMatrix(replayGames[0], m);
 }
-
 void MyGame::replay() {
 	DeleteArea(50, 50, 0, 0);
 	GotoXY(0, 0);
@@ -250,7 +247,6 @@ void MyGame::replay() {
 		displayOldGame(replayGames[i], i);
 	}
 }
-
 void MyGame::displayOldGame(Matrix* m, int index) {
 	SetColor(3 * index + 1);
 	ChessTable cb(index * (ROWS + 1) + 1, 2);
@@ -262,14 +258,7 @@ void MyGame::displayOldGame(Matrix* m, int index) {
 	if (index == NUMBER_OF_GAME_REPLAY - 1) {
 		SetColor(_Yellow_);
 		GotoBox(NUMBER_OF_GAME_REPLAY*(ROWS + 1) + 1, 0);
-		char c;
-		do {
-			cout << "Press 'm' to back MAIN MENU: "; cin >> c;
-		} while (c != 'm');
-		//DeleteArea(40, 135, 0, 0);
-		system("cls");
-
-		Menu(_Yellow_);
+		backMainMenu(true);
 	}
 }
 
@@ -282,9 +271,5 @@ void MyGame::Guild() {
 	cout << "1. Lan luot nhap toa do (so _dong so_cot)\n";
 	cout << "2. Neu ben nao co " << CONDITION_WIN + 1 << " quan co cua minh giong nhau lien tiep thi se thang\n";
 	cout << endl;
-	char c;
-	do {
-		cout << "Press 'm' to back MAIN MENU: "; cin >> c;
-	} while (c != 'm');
-	Menu(_Yellow_);
+	backMainMenu(false);
 }

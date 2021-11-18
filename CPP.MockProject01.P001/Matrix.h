@@ -29,7 +29,8 @@ public:
 	short getValue(short row, short col);
 	//add value in maxtrix[row][col]
 	void add(short row, short col, short v);
-
+	//copy 2 matrix cung cap
+	static void copyMatrix(Matrix* a, Matrix* b);
 	//copy value of a to this
 	void copy(Matrix a);
 	//print value of matrix

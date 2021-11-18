@@ -19,16 +19,18 @@ public:
 	MyGame();
 
 	void Start();
-	void Menu(WORD color);
+	void endGame();
+
+	void mainMenu(WORD color);
 	void menuPlayWithBOT(WORD color);
-	void End();
+	void backMainMenu(bool clean);
 
 	void playWithPlayer();
 	void playWithBot(short level);
-	void Guild();
-	void Test(short level);
-	void saveGame(Matrix* m);
 
+	void Guild();
+
+	void saveGame(Matrix* m);
 	void displayOldGame(Matrix* m, int i);
 	void replay();
 };

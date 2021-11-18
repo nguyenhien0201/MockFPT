@@ -90,3 +90,10 @@ Matrix operator + (Matrix a, Matrix b)
 	return c;
 }
 
+void Matrix::copyMatrix(Matrix* a, Matrix* b) {
+	for (int i = 0; i < a->rows; i++) {
+		for (int j = 0; j < a->cols; j++) {
+			a->value[i][j] = b->value[i][j];
+		}
+	}
+}
