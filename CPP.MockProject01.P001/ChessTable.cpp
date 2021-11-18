@@ -66,7 +66,7 @@ int horizontalWin(Matrix* m, int x, int y, short winCondition) {
 	//left count, right count
 	int count = 0;
 	int v = m->value[x][y];
-	for (int j = y + 1; j < COLS; j++) {
+	for (int j = y + 1; j < m->getCols(); j++) {
 		if (m->value[x][j] == v) count++;
 		else break;
 	}
