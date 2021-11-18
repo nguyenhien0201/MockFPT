@@ -64,48 +64,46 @@ int playerWin(int count, short v) {
 //Kiem tra thang theo hang
 int horizontalWin(Matrix* m, int x, int y) {
 	//left count, right count
-	int lcount = 0, rcount = 0;
+	int count = 0;
 	int v = m->value[x][y];
 	for (int j = y + 1; j < COLS; j++) {
-		if (m->value[x][j] == v) rcount++;
+		if (m->value[x][j] == v) count++;
 		else break;
 	}
 
 	for (int j = y - 1; j >= 0; j--) {
-		if (m->value[x][j] == v) lcount++;
+		if (m->value[x][j] == v) count++;
 		else break;
 	}
-	return playerWin(rcount + lcount, m->value[x][y]);
+	return playerWin(count, m->value[x][y]);
 	//return playerWin(rcount + lcount, m->value[x][y]);
 }
 
 //Kiem tra thang theo cot
 int verticalWin(Matrix* m, int x, int y) {
 	//up count, down count
-	int ucount = 0, dcount = 0;
+	int count = 0;
 
 	for (int i = x + 1; i < ROWS; i++) {
-		if (m->value[i][y] == m->value[x][y]) dcount++;
+		if (m->value[i][y] == m->value[x][y]) count++;
 		else break;
 	}
 
 	for (int i = x - 1; i >= 0; i--) {
-		if (m->value[i][y] == m->value[x][y]) ucount++;
+		if (m->value[i][y] == m->value[x][y]) count++;
 		else break;
 	}
 
-	return playerWin(ucount + dcount, m->value[x][y]);
+	return playerWin(count, m->value[x][y]);
 }
 
 //Kiem tra thang theo duong cheo chinh
 int mDiagonalWin(Matrix* m, int x, int y) {
-	//left up, right down
-	int lucount = 0, rdcount = 0;
-
+	int count = 0;
 	for (int i = x + 1; i < ROWS; i++) {
 		for (int j = y + 1; j < COLS; j++) {
 			if (j - y == i - x) {
-				if (m->value[i][j] == m->value[x][y]) rdcount++;
+				if (m->value[i][j] == m->value[x][y]) count++;
 				else break;
 			}
 			else continue;
@@ -115,25 +113,24 @@ int mDiagonalWin(Matrix* m, int x, int y) {
 	for (int i = x - 1; i >= 0; i--) {
 		for (int j = y - 1; j >= 0; j--) {
 			if (y - j == x - i) {
-				if (m->value[i][j] == m->value[x][y]) lucount++; 
+				if (m->value[i][j] == m->value[x][y]) count++;
 				else break;
 			}
 			else continue;
 		}
 	}
-
-	return playerWin(rdcount + lucount, m->value[x][y]);
+	return playerWin(count, m->value[x][y]);
 }
 
 //Kiem tra thang theo duong cheo phu
 int aDiagonalWin(Matrix* m, int x, int y) {
 	//right up, left down
-	int rucount = 0, ldcount = 0;
+	int count = 0;
 
 	for (int i = x + 1; i < ROWS; i++) {
 		for (int j = y - 1; j >= 0; j--) {
 			if (y - j == i - x) {
-				if (m->value[i][j] == m->value[x][y]) rucount++;
+				if (m->value[i][j] == m->value[x][y]) count++;
 				else break;
 			}
 			else continue;
@@ -143,14 +140,14 @@ int aDiagonalWin(Matrix* m, int x, int y) {
 	for (int i = x - 1; i >= 0; i--) {
 		for (int j = y + 1; j < COLS; j++) {
 			if (j - y == x - i) {
-				if (m->value[i][j] == m->value[x][y]) ldcount++;
+				if (m->value[i][j] == m->value[x][y]) count++;
 				else break;
 			}
 			else continue;
 		}
 	}
 
-	return playerWin(rucount + ldcount, m->value[x][y]);
+	return playerWin(count, m->value[x][y]);
 }
 
 
@@ -159,7 +156,6 @@ bool isFull(Matrix* m) {
 		for (int j = 0; j < COLS; j++) {
 			if (m->value[i][j] == NULL) return false;
 		}
-
 	return true;
 }
 short ChessTable::checkWinner(Matrix* m, short x, short y) {
