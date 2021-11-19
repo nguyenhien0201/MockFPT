@@ -35,6 +35,7 @@ void ChessTable::draw(short i, short j, short value) {
 	if (mark == NULL) {
 		char chess = value == 1 ? 'X' : value == 2 ? 'O' : 'E';
 		status->add(i, j, value);
+	
 		DrawChess(i + m_X, j + m_Y, chess);
 		//ve thanh cong
 	}

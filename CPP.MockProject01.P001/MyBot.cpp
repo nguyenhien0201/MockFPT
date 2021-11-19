@@ -88,16 +88,17 @@ void MyBot::easyProcess() {
 			if (status->getValue(i, j) != NULL) {
 				break;
 			}
-			j++;
-			if (j = status->getCols()) { i++; j = 0; }
 		}
 		m = process(i, j);
 		analysis(m, avlb);
-
+		if (avlb == 0) {
+			j++;
+			if (j == status->getCols()) { i++; j = 0; }
+		}
 	} while (avlb == 0);
 
 	bestMove(m);
-	delete m;
+	//delete m;
 }
 void MyBot::normalProcess() {
 	short avlb = 0;
@@ -113,14 +114,14 @@ void MyBot::normalProcess() {
 					break;
 				}
 				j++;
-				if (j = status->getCols()) { i++; j = 0; }
+				if (j == status->getCols()) { i++; j = 0; }
 			}
 			m = process(i, j);
 		}
 	} while (avlb == 0);
 
 	bestMove(m);
-	delete m;
+	//delete m;
 }
 void MyBot::hardProcess() {
 	normalProcess();

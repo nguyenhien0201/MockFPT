@@ -10,6 +10,7 @@ void MyGame::Start() {
 	mainMenu(_Yellow_);
 }
 void MyGame::endGame() {
+	
 	SetColor(_Yellow_);
 
 	char c;
@@ -91,18 +92,19 @@ void MyGame::menuPlayWithBOT(WORD color) {
 		}
 	} while (c != 4);
 }
-void MyGame::backMainMenu(bool clean){
+void MyGame::backMainMenu(bool clean) {
 	char c;
 	do {
 		cout << "Press 'm' to back MAIN MENU: "; cin >> c;
 	} while (c != 'm');
 	//DeleteArea(40, 135, 0, 0);
-	if(clean) DeleteArea(ROWS*4, 0, 0);
+	if (clean) DeleteArea(ROWS * 4, 0, 0);
 
 	mainMenu(_Yellow_);
 }
 
 void MyGame::playWithPlayer() {
+	replayMoves.clear();
 	DeleteArea(8, 0, 0);
 	GotoXY(0, 0);
 
@@ -135,7 +137,7 @@ void MyGame::playWithPlayer() {
 
 		//SetColor(_Yellow_);
 		chessTable.draw(x, y, turn);
-
+		saveMove(x, y);
 		turn = turn == 1 ? 2 : 1;
 	} while (chessTable.checkWin(x, y) == NULL);
 
@@ -159,6 +161,7 @@ void MyGame::playWithPlayer() {
 }
 //thuat toan co van de
 void MyGame::playWithBot(short level) {
+	replayMoves.clear();
 	DeleteArea(8, 0, 0);
 	GotoXY(0, 0);
 
@@ -202,7 +205,7 @@ void MyGame::playWithBot(short level) {
 		} while (!chessTable.checkMove(x, y));
 
 		chessTable.draw(x, y, turn);
-
+		saveMove(x, y);
 		turn = turn == 1 ? 2 : 1;
 	} while (chessTable.checkWin(x, y) == 0);
 
@@ -230,6 +233,24 @@ void MyGame::playWithBot(short level) {
 //		}
 //	}
 //}
+void MyGame::saveMove(short x, short y) {
+	//adj[v].push_back(w);
+	Position m;
+	m.x = x; m.y = y;
+	replayMoves.push_back(m);
+	/*short count = 0;
+	list<Position>::iterator i;
+	i = replayMoves.begin();
+	while (i != replayMoves.end()) {
+		count++; 
+		if (count > ROWS * COLS) {
+			i--; count--;
+			replayMoves.pop_front(); 
+		}
+		i++;
+	}
+*/
+}
 void MyGame::saveGame(Matrix* m) {
 	for (int i = NUMBER_OF_GAME_REPLAY - 1; i >= 1; i--) {
 		Matrix::copyMatrix(replayGames[i], replayGames[i - 1]);
@@ -237,17 +258,42 @@ void MyGame::saveGame(Matrix* m) {
 	Matrix::copyMatrix(replayGames[0], m);
 }
 void MyGame::replay() {
-	DeleteArea(ROWS*5, 0, 0);
+	DeleteArea(ROWS * 5, 0, 0);
 	GotoXY(0, 0);
-
 	SetColor(_Yellow_);
-	cout << "*---------------------REPLAY-------------------------*" << endl;
-
-	for (int i = 0; i < NUMBER_OF_GAME_REPLAY; i++) {
-		displayOldGame(replayGames[i], i);
+	cout << "*---------------------REPLAY AND HISTORY-------------------------*" << endl;
+	replayLastGame();
+	for (int i = 1; i < NUMBER_OF_GAME_REPLAY; i++) {
+		displayHistory(replayGames[i], i);
 	}
 }
-void MyGame::displayOldGame(Matrix* m, int index) {
+void MyGame::replayLastGame() {
+	SetColor(_Yellow_);
+	ChessTable cb(1, 2);
+
+	cb.display();
+	//SetColor(_White_);
+
+	list<Position>::iterator i;
+	i = replayMoves.begin();
+	bool human = 1;
+	//for (int j = 1; i != replayMoves.end() && j <= index * ROWS*COLS; j++) i++;
+	while (i != replayMoves.end()) {
+		if (human) {
+			SetColor(_Light_Red_);
+			cb.draw(i->x, i->y, 1);
+		}
+		else {
+			SetColor(_Light_Aqua_);
+			cb.draw(i->x, i->y, 2);
+		}
+		//delay
+		Sleep(1000);
+		human ^= 1; i++;
+	}
+
+}
+void MyGame::displayHistory(Matrix* m, int index) {
 	SetColor(3 * index + 1);
 	ChessTable cb(index * (ROWS + 1) + 1, 2);
 

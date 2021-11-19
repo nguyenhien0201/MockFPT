@@ -2,7 +2,8 @@
 #include <string>
 #include <Windows.h>
 #include <conio.h>
-
+#include <chrono>
+#include <list>
 #include "ChessTable.h"
 #include "MyConsole.h"
 #include "MyBot.h"
@@ -13,9 +14,10 @@ using namespace std;
 #pragma once
 class MyGame
 {
+	list<Position> replayMoves;
 	Matrix** replayGames;
 public:
-	
+
 	MyGame();
 
 	void Start();
@@ -29,8 +31,9 @@ public:
 	void playWithBot(short level);
 
 	void Guild();
-
+	void saveMove(short x, short y);
 	void saveGame(Matrix* m);
-	void displayOldGame(Matrix* m, int i);
+	void displayHistory(Matrix* m, int i);
+	void replayLastGame();
 	void replay();
 };
