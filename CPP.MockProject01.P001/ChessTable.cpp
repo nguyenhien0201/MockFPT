@@ -58,7 +58,7 @@ void ChessTable::gotoChessBox(short row, short col) {
 }
 
 
-// 1: player 1; 2:player 2; 0: chua co ai thang
+// 1: player 1; 2:player 2; 0: chua co ai thang; DRAW_GAME: hoa
 //Kiem tra ai thang
 int playerWin(int count, short v, short winCondition) {
 	if (count == winCondition) return v;

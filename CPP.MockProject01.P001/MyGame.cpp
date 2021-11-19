@@ -5,12 +5,13 @@ MyGame::MyGame() {
 	for (int i = 0; i < NUMBER_OF_GAME_REPLAY; i++) {
 		replayGames[i] = new Matrix(ROWS, COLS);
 	}
+	players = new Player[MAX_PLAYERS];
 }
 void MyGame::Start() {
 	mainMenu(_Yellow_);
 }
 void MyGame::endGame() {
-	
+
 	SetColor(_Yellow_);
 
 	char c;
@@ -22,7 +23,7 @@ void MyGame::endGame() {
 }
 
 void MyGame::mainMenu(WORD color) {
-	DeleteArea(35, 0, 0);
+	DeleteArea(ROWS * 4, 0, 0);
 
 	SetColor(color);
 
@@ -34,7 +35,7 @@ void MyGame::mainMenu(WORD color) {
 		cout << "2.Play with BOT" << endl;
 		cout << "3.Replay" << endl;
 		cout << "4.Player's Infomation" << endl;
-		cout << "5.Guild" << endl;
+		cout << "5.Guide" << endl;
 		cout << "6.Exit" << endl;
 		cout << "Press number to choose: "; cin >> c;
 
@@ -49,9 +50,10 @@ void MyGame::mainMenu(WORD color) {
 			replay();
 			break;
 		case 4:
+			playerInfo();
 			break;
 		case 5:
-			Guild();
+			Guide();
 			break;
 		case 6:
 			system("cls");
@@ -92,13 +94,13 @@ void MyGame::menuPlayWithBOT(WORD color) {
 		}
 	} while (c != 4);
 }
-void MyGame::backMainMenu(bool clean) {
+void MyGame::backMainMenu(bool Clean) {
 	char c;
 	do {
 		cout << "Press 'm' to back MAIN MENU: "; cin >> c;
 	} while (c != 'm');
-	//DeleteArea(40, 135, 0, 0);
-	if (clean) DeleteArea(ROWS * 4, 0, 0);
+
+	if (Clean) system("cls");
 
 	mainMenu(_Yellow_);
 }
@@ -112,8 +114,14 @@ void MyGame::playWithPlayer() {
 	short x = 0, y = 0;
 	short current_point_x, current_point_y;
 
-	coutWithColor("=> Player 1 = X\t", _Light_Red_);
-	coutWithColor("Player 2 = O", _Light_Aqua_);
+	Player player1, player2;
+	coutWithColor("Name of Player 1: ", _Light_Red_); cin >> player1.name;
+	coutWithColor("Name of Player 2: ", _Light_Aqua_); cin >> player2.name;
+	DeleteArea(2, 0, 0);
+
+	GotoXY(0, 0);
+	coutWithColor("=>" + player1.name + " : X\t", _Light_Red_);
+	coutWithColor(player2.name + " : O", _Light_Aqua_);
 
 	SetColor(_Yellow_);
 
@@ -128,10 +136,11 @@ void MyGame::playWithPlayer() {
 			current_point_y = GetY();
 
 			short color = turn == 1 ? _Light_Red_ : _Light_Aqua_;
+			string name = turn == 1 ? player1.name : player2.name;
 			SetColor(color);
-			cout << "Player " << turn << "'s turn: ";
+			cout << "Player " << turn << ": " << name << "'s turn: ";
 			cin >> x >> y;
-			DeleteArea(2, current_point_x, current_point_y);
+			DeleteArea(3, current_point_x, current_point_y);
 			SetColor(color);
 		} while (!chessTable.checkMove(x, y));
 
@@ -143,19 +152,27 @@ void MyGame::playWithPlayer() {
 
 	saveGame(chessTable.status);
 
-	//DeleteArea(50, 50, 0, 0);
-	//GotoXY(0, 0);
 	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
 	if (winer == DRAW_GAME) {
+		player1.nod++; player2.nod++;
 		cout << "This match is draw" << endl;
 	}
 	else {
-		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
+		short color; string name;
+		if (winer == 1) {
+			color = _Light_Red_; name = player1.name;
+			player1.now++; player2.nol++;
+		}
+		else {
+			color = _Light_Aqua_; name = player2.name;
+			player1.nol++; player2.now++;
+		}
 		SetColor(color);
-
-		cout << "Player " << winer << " win" << endl;
+		cout << "Player " << winer << ": " << name << " win" << endl;
 	}
+	savePlayerToBuffer(player1);
+	savePlayerToBuffer(player2);
 
 	endGame();
 }
@@ -234,22 +251,9 @@ void MyGame::playWithBot(short level) {
 //	}
 //}
 void MyGame::saveMove(short x, short y) {
-	//adj[v].push_back(w);
 	Position m;
 	m.x = x; m.y = y;
 	replayMoves.push_back(m);
-	/*short count = 0;
-	list<Position>::iterator i;
-	i = replayMoves.begin();
-	while (i != replayMoves.end()) {
-		count++; 
-		if (count > ROWS * COLS) {
-			i--; count--;
-			replayMoves.pop_front(); 
-		}
-		i++;
-	}
-*/
 }
 void MyGame::saveGame(Matrix* m) {
 	for (int i = NUMBER_OF_GAME_REPLAY - 1; i >= 1; i--) {
@@ -266,6 +270,9 @@ void MyGame::replay() {
 	for (int i = 1; i < NUMBER_OF_GAME_REPLAY; i++) {
 		displayHistory(replayGames[i], i);
 	}
+	SetColor(_Yellow_);
+	GotoBox(NUMBER_OF_GAME_REPLAY*(ROWS + 1) + 1, 0);
+	backMainMenu(true);
 }
 void MyGame::replayLastGame() {
 	SetColor(_Yellow_);
@@ -300,15 +307,9 @@ void MyGame::displayHistory(Matrix* m, int index) {
 	cb.display();
 	//SetColor(_White_);
 	cb.draw(m);
-
-	if (index == NUMBER_OF_GAME_REPLAY - 1) {
-		SetColor(_Yellow_);
-		GotoBox(NUMBER_OF_GAME_REPLAY*(ROWS + 1) + 1, 0);
-		backMainMenu(true);
-	}
 }
 
-void MyGame::Guild() {
+void MyGame::Guide() {
 	DeleteArea(9, 0, 0);
 	GotoXY(0, 0);
 	SetColor(_Yellow_);
@@ -317,5 +318,51 @@ void MyGame::Guild() {
 	cout << "1. Lan luot nhap toa do (so _dong so_cot)\n";
 	cout << "2. Neu ben nao co " << CONDITION_WIN + 1 << " quan co cua minh giong nhau lien tiep thi se thang\n";
 	cout << endl;
-	backMainMenu(false);
+	backMainMenu(0);
+}
+
+int MyGame::playerCount() {
+	int count = 0;
+	for (int i = 0; i < MAX_PLAYERS; i++) {
+		if (players[i].name != "") count++;
+	}
+	return count;
+}
+
+void MyGame::savePlayerToBuffer(Player p) {
+	int nop = playerCount();
+	if (nop == 0) players[nop] = p;
+	else {
+		bool exist = false;
+
+		for (int i = 0; i < nop; i++) {
+			if (players[i].name == Player::ToLower(p.name)) {
+				exist = true;
+				players[i].now += p.now;
+				players[i].nol += p.nol;
+				players[i].nod += p.nod;
+				break;
+			}
+		}
+		if (!exist) players[nop] = p;
+	}
+
+
+}
+
+void MyGame::playerInfo() {
+	system("cls");
+	SetColor(_Yellow_);
+	GotoXY(0, 0);
+
+	cout << "*--------------PLAYER INFO------------*" << endl;
+	for (int i = 0; i < playerCount(); i++) {
+		cout << "Player " << i + 1 << ": " << endl;
+		cout << "Name: " << players[i].name << endl;
+		cout << "\tWin: " << players[i].now << endl;
+		cout << "\tDraw: " << players[i].nod << endl;
+		cout << "\tLoss: " << players[i].nol << endl;
+		cout << endl;
+	}
+	backMainMenu(true);
 }

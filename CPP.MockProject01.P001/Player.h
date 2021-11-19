@@ -5,15 +5,12 @@ using namespace std;
 #pragma once
 class Player
 {
-private:
-	static int s_id;
-	void generationId() {
-		s_id++;
-	}
-	string name;
 public:
+	string name;
+	//number of win, number of loss, number of draw
+	int now, nol, nod;
+	static string ToLower(string s);
 	Player();
-
-
+	Player(Player const &p);
 };
 
