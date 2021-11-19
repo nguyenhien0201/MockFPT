@@ -1,4 +1,4 @@
-//#include<limits>
+#include<list>
 #include"Matrix.h"
 #include"ChessTable.h"
 
@@ -18,34 +18,32 @@ struct Position {
 };
 class MyBot
 {
-
+	list<Position> marked;
 	Position m_start = { 0,0 };
 	Position m_end;
 	short m_winCondition = 2;
 	
+	//tra ve ma tran con cua status, duoc xu li tu toa do (x,y)
 	Matrix* process(short x, short y);
-	void easyProcess();
-	void normalProcess();
-	void hardProcess();
-	//void analysis(Matrix* m, short& available);
-
+	void easyProcess(); //easy level
+	void normalProcess();//normal level
+	void hardProcess();//hard level
+	void analysisStatus();
+	//tim nuoc di tot nhat
+	void bestMove(Matrix* m);
 	short minimax(Matrix* m, short depth, bool isMaximizing, short x, short y);
 public:
-	Matrix* status;
-	short m_lever;
-	Position previous;
+	Matrix* status; //ma tran trang thai ban co
+	short m_lever; 
+	Position previous; // toa do ma human vua nhap
 	
-	short m_x, m_y;
+	short m_x, m_y;//buoc di bot chon
 	
 	MyBot() {}
 
-	MyBot(short level, Matrix* m) { m_lever = level; status = m; }
+	MyBot(short level, Matrix* m);
 	~MyBot() { delete status; }
 	
-
 	void generateMove();
-	
-	void bestMove(Matrix* m);
-	
 };
 

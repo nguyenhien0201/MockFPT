@@ -1,5 +1,22 @@
 #include "MyBot.h"
 
+MyBot::MyBot(short level, Matrix* m) {
+	m_lever = level; status = m;
+	marked.clear();
+	analysisStatus();
+}
+void MyBot::analysisStatus() {
+	Position p;
+	for (int i = 0; i < status->getRows(); i++) {
+		for (int j = 0; j < status->getCols(); j++) {
+			if (status->value[i][j] != NULL) {
+				p.x = i;
+				p.y = j;
+				marked.push_back(p);
+			}
+		}
+	}
+}
 void MyBot::generateMove() {
 	if (ROWS == 3) bestMove(status);
 	else if (m_lever == _EASY_) {
@@ -29,7 +46,6 @@ void analysis(Matrix* m, short& available) {
 			}
 		}
 	}
-
 }
 void analysis(Matrix* m, short& rMax, short& cMax, short& rMin, short& cMin) {
 	rMax = 0; cMax = 0;
@@ -67,65 +83,34 @@ Matrix* MyBot::process(short x, short y) {
 	return m;
 }
 void MyBot::easyProcess() {
-
-	/*short r_s = previous.x > 0 ? previous.x - 1 : 0;
-	short c_s = previous.y > 0 ? previous.y - 1 : 0;
-
-	short r_e = previous.x < ROWS - 1 ? previous.x + 1 : ROWS - 1;
-	short c_e = previous.y < COLS - 1 ? previous.y + 1 : COLS - 1;
-	Matrix* m = new Matrix(r_e - r_s + 1, c_e - c_s + 1);
-	for (int i = r_s; i <= r_e; i++) {
-		for (int j = c_s; j <= c_e; j++) {
-			m->add(i - r_s, j - c_s, status->getValue(i, j));
-		}
-	}*/
-
 	short avlb = 0;
-	short i = 0, j = 0;
+	short x = 0, y = 0;
 	Matrix* m;
-	do {
-		while (i < status->getRows() && j < status->getCols()) {
-			if (status->getValue(i, j) != NULL) {
-				break;
-			}
-		}
-		m = process(i, j);
-		analysis(m, avlb);
-		if (avlb == 0) {
-			j++;
-			if (j == status->getCols()) { i++; j = 0; }
-		}
-	} while (avlb == 0);
+	//tao ma tran con <= 3x3
+	m = process(previous.x, previous.y);
+	//phan tich xem ma tran m have spot available
+	analysis(m, avlb);
+	if (avlb == 0) {
+		list<Position>::iterator i;
+		i = marked.begin();
+		do {
+			x = i->x;
+			y = i->y;
+			m = process(x, y);
+			analysis(m, avlb);
+			if (avlb == 0 && i != marked.end()) i++;
+		} while (avlb == 0);
+	}
 
 	bestMove(m);
-	//delete m;
 }
 void MyBot::normalProcess() {
-	short avlb = 0;
-	short i = 0, j = 0;
-	Matrix* m;
-	m = process(previous.x, previous.y);
-	do {
-
-		analysis(m, avlb);
-		if (avlb == 0) {
-			while (i < status->getRows() && j < status->getCols()) {
-				if (status->getValue(i, j) != NULL) {
-					break;
-				}
-				j++;
-				if (j == status->getCols()) { i++; j = 0; }
-			}
-			m = process(i, j);
-		}
-	} while (avlb == 0);
-
-	bestMove(m);
+	easyProcess();
 	//delete m;
 }
 void MyBot::hardProcess() {
 	normalProcess();
-	
+
 }
 
 

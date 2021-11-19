@@ -3,7 +3,7 @@
 #include "Matrix.h" 
 #include "MyConsole.h"
 
-#define ROWS 3
+#define ROWS 10
 #define COLS ROWS
 #define CONDITION_WIN 3
 #define DRAW_GAME 3
