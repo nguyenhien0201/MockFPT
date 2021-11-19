@@ -95,8 +95,8 @@ void SetBackgroundColor(WORD color) {
 	SetConsoleTextAttribute(hConsoleOutput, wAttributes);
 }
 void GotoBox(short r, short c) {
-	short topX = _LENGTH_HORIZONTAL * c ;
-	short topY = _LENGTH_VERTICAL * r ;
+	short topX = _LENGTH_HORIZONTAL * c;
+	short topY = _LENGTH_VERTICAL * r;
 	GotoXY(topX, topY);
 }
 void DrawBox(short row, short col) {
@@ -116,7 +116,15 @@ void DrawChess(short row, short col, char chess) {
 	GotoXY(topX + _LENGTH_HORIZONTAL / 2, topY + 1);
 	cout << chess;
 }
-
+void DeleteArea(short rows, short topX, short topY) {
+	SetColor(0);
+	for (short i = 0; i < rows; i++)
+	{
+		GotoXY(topX, i + topY);
+		cout << "Eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";//50 char
+		cout << "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";//50 char
+	}
+}
 void DeleteArea(short rows, short cols, short topX, short topY) {
 	SetColor(0);
 	for (short i = 0; i < rows; i++)

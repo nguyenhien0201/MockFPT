@@ -21,7 +21,7 @@ void MyGame::endGame() {
 }
 
 void MyGame::mainMenu(WORD color) {
-	DeleteArea(35, 75, 0, 0);
+	DeleteArea(35, 0, 0);
 
 	SetColor(color);
 
@@ -60,7 +60,7 @@ void MyGame::mainMenu(WORD color) {
 	} while (c != 6);
 }
 void MyGame::menuPlayWithBOT(WORD color) {
-	DeleteArea(8, 50, 0, 0);
+	DeleteArea(8, 0, 0);
 	GotoXY(0, 0);
 
 	SetColor(color);
@@ -97,13 +97,13 @@ void MyGame::backMainMenu(bool clean){
 		cout << "Press 'm' to back MAIN MENU: "; cin >> c;
 	} while (c != 'm');
 	//DeleteArea(40, 135, 0, 0);
-	if(clean) system("cls");
+	if(clean) DeleteArea(ROWS*4, 0, 0);
 
 	mainMenu(_Yellow_);
 }
 
 void MyGame::playWithPlayer() {
-	DeleteArea(8, 50, 0, 0);
+	DeleteArea(8, 0, 0);
 	GotoXY(0, 0);
 
 	short turn = 1;
@@ -129,7 +129,7 @@ void MyGame::playWithPlayer() {
 			SetColor(color);
 			cout << "Player " << turn << "'s turn: ";
 			cin >> x >> y;
-			DeleteArea(2, 30, current_point_x, current_point_y);
+			DeleteArea(2, current_point_x, current_point_y);
 			SetColor(color);
 		} while (!chessTable.checkMove(x, y));
 
@@ -146,7 +146,7 @@ void MyGame::playWithPlayer() {
 	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
 	if (winer == DRAW_GAME) {
-		cout << "This match is a draw" << endl;
+		cout << "This match is draw" << endl;
 	}
 	else {
 		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
@@ -159,7 +159,7 @@ void MyGame::playWithPlayer() {
 }
 //thuat toan co van de
 void MyGame::playWithBot(short level) {
-	DeleteArea(8, 50, 0, 0);
+	DeleteArea(8, 0, 0);
 	GotoXY(0, 0);
 
 	short turn = 1;
@@ -186,7 +186,7 @@ void MyGame::playWithBot(short level) {
 				current_point_y = GetY();
 				cout << "Human's turn: ";
 				cin >> x >> y;
-				DeleteArea(2, 30, current_point_x, current_point_y);
+				DeleteArea(2, current_point_x, current_point_y);
 				current_point_x = x; current_point_y = y; //luu lai de chuyen vao bot
 				SetColor(color);
 			}
@@ -211,7 +211,7 @@ void MyGame::playWithBot(short level) {
 	GotoBox(ROWS + 3, 0);
 	short winer = chessTable.checkWin(x, y);
 	if (winer == DRAW_GAME) {
-		cout << "This match is a draw" << endl;
+		cout << "This match is draw" << endl;
 	}
 	else {
 		short color = winer == 1 ? _Light_Red_ : _Light_Aqua_;
@@ -237,7 +237,7 @@ void MyGame::saveGame(Matrix* m) {
 	Matrix::copyMatrix(replayGames[0], m);
 }
 void MyGame::replay() {
-	DeleteArea(50, 50, 0, 0);
+	DeleteArea(ROWS*5, 0, 0);
 	GotoXY(0, 0);
 
 	SetColor(_Yellow_);
@@ -252,7 +252,7 @@ void MyGame::displayOldGame(Matrix* m, int index) {
 	ChessTable cb(index * (ROWS + 1) + 1, 2);
 
 	cb.display();
-	SetColor(_White_);
+	//SetColor(_White_);
 	cb.draw(m);
 
 	if (index == NUMBER_OF_GAME_REPLAY - 1) {
@@ -263,7 +263,7 @@ void MyGame::displayOldGame(Matrix* m, int index) {
 }
 
 void MyGame::Guild() {
-	DeleteArea(9, 50, 0, 0);
+	DeleteArea(9, 0, 0);
 	GotoXY(0, 0);
 	SetColor(_Yellow_);
 

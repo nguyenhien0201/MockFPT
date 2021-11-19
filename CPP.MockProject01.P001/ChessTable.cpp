@@ -42,8 +42,11 @@ void ChessTable::draw(short i, short j, short value) {
 void ChessTable::draw(Matrix* m) {
 	for (int i = 0; i < ROWS; i++) {
 		for (int j = 0; j < COLS; j++) {
-			if (m->value[i][j] != NULL)
+			if (m->value[i][j] != NULL) {
+				short color = m->value[i][j] == 1 ? _Light_Red_ : _Light_Aqua_;
+				SetColor(color);
 				draw(i, j, m->value[i][j]);
+			}
 		}
 	}
 }
@@ -101,7 +104,7 @@ int verticalWin(Matrix* m, int x, int y, short winCondition) {
 int mDiagonalWin(Matrix* m, int x, int y, short winCondition) {
 	int count = 0;
 	int i = x + 1, j = y + 1;
-	while (i < m->getRows() && j < m->getCols()&& m->value[i][j] == m->value[x][y]) {
+	while (i < m->getRows() && j < m->getCols() && m->value[i][j] == m->value[x][y]) {
 		count++;
 		i++;
 		j++;
@@ -112,7 +115,7 @@ int mDiagonalWin(Matrix* m, int x, int y, short winCondition) {
 		i--;
 		j--;
 	}
-	return playerWin(count, m->value[x][y],winCondition);
+	return playerWin(count, m->value[x][y], winCondition);
 }
 
 //Kiem tra thang theo duong cheo phu
@@ -145,7 +148,7 @@ short ChessTable::checkWinner(Matrix* m, short x, short y, short winCondition) {
 	int vw = verticalWin(m, x, y, winCondition);
 	int mdw = mDiagonalWin(m, x, y, winCondition);
 	int adw = aDiagonalWin(m, x, y, winCondition);
-	
+
 	if (isFull(m) && hw == 0 && vw == 0 && mdw == 0 && adw == 0) {
 		return DRAW_GAME;
 	}

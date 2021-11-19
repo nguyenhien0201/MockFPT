@@ -5,7 +5,7 @@
 
 #define ROWS 3
 #define COLS ROWS
-#define CONDITION_WIN 2
+#define CONDITION_WIN 3
 #define DRAW_GAME 3
 
 using namespace std;

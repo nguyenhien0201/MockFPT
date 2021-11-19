@@ -62,5 +62,5 @@ void DrawChess(short row, short col, char chess);
 
 //xoa r hang,c cot bat dau tu toa do topX topY
 void DeleteArea(short rows, short cols, short topX, short topY);
-
+void DeleteArea(short rows, short topX, short topY);
 void coutWithColor(string input, WORD color);

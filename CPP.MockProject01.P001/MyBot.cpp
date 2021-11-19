@@ -1,18 +1,5 @@
 #include "MyBot.h"
 
-
-//void MyBot::generateMove() {
-//	for (short i = 0; i < ROWS; i++) {
-//		for (short j = 0; j < COLS; j++) {
-//			if (status->value[i][j] == NULL) {
-//				m_x = i;
-//				m_y = j;
-//			}
-//		}
-//	}
-//	bestMove();
-//}
-
 void MyBot::generateMove() {
 	if (ROWS == 3) bestMove(status);
 	else if (m_lever == _EASY_) {
@@ -33,41 +20,54 @@ void MyBot::generateMove() {
 
 }
 
-void MyBot::analysis(Matrix* m, short& available) {
+void analysis(Matrix* m, short& available) {
 	available = 0;
 	for (int i = 0; i < m->getRows(); i++) {
 		for (int j = 0; j < m->getCols(); j++) {
-			if (status->value[i][j] != NULL) {
+			if (m->value[i][j] == NULL) {
 				available++;
-				break;
 			}
 		}
 	}
 
 }
+void analysis(Matrix* m, short& rMax, short& cMax, short& rMin, short& cMin) {
+	rMax = 0; cMax = 0;
+	rMin = 0; cMin = 0;
+	for (int i = 0; i < m->getRows(); i++) {
+		for (int j = 0; j < m->getCols(); j++) {
+			if (m->value[i][j] != NULL) {
+				rMin = min(rMin, i);
+				cMin = min(rMin, j);
+				rMax = max(rMax, i);
+				cMax = max(cMax, j);
+			}
+		}
+	}
 
+}
+//x ,y la toa do diem duoc chon de xu ly, co the la toa do ma human vua nhap
 Matrix* MyBot::process(short x, short y) {
+	//top left
 	m_start.x = x > 0 ? x - 1 : 0;
-	m_start.y = x > 0 ? x - 1 : 0;
-
-	m_end.x = x < ROWS - 1 ? x + 2 : ROWS;
-	m_end.y = y < COLS - 1 ? y + 2 : COLS;
+	m_start.y = y > 0 ? y - 1 : 0;
+	//bottom right+1
+	m_end.x = x < ROWS - 1 ? x + 1 : ROWS - 1;
+	m_end.y = y < COLS - 1 ? y + 1 : COLS - 1;
 	//short r_s = x > 0 ? x - 1 : 0;
 	//short c_s = y > 0 ? y - 1 : 0;
-
 	//short r_e = x < ROWS - 1 ? x + 1 : ROWS - 1;
 	//short c_e = y < COLS - 1 ? y + 1 : COLS - 1;
-	Matrix* m = new Matrix(m_end.x - m_start.x, m_end.y - m_start.y);
-	for (int i = m_start.x; i < m_end.x; i++) {
-		for (int j = m_start.y; j < m_end.y; j++) {
+	Matrix* m = new Matrix(m_end.x - m_start.x + 1, m_end.y - m_start.y + 1);
+	for (int i = m_start.x; i <= m_end.x; i++) {
+		for (int j = m_start.y; j <= m_end.y; j++) {
 			m->add(i - m_start.x, j - m_start.y, status->getValue(i, j));
 		}
 	}
 	return m;
 }
 void MyBot::easyProcess() {
-	//short prio, avlb;
-	//analysis(prio, avlb);
+
 	/*short r_s = previous.x > 0 ? previous.x - 1 : 0;
 	short c_s = previous.y > 0 ? previous.y - 1 : 0;
 
@@ -83,6 +83,26 @@ void MyBot::easyProcess() {
 	short avlb = 0;
 	short i = 0, j = 0;
 	Matrix* m;
+	do {
+		while (i < status->getRows() && j < status->getCols()) {
+			if (status->getValue(i, j) != NULL) {
+				break;
+			}
+			j++;
+			if (j = status->getCols()) { i++; j = 0; }
+		}
+		m = process(i, j);
+		analysis(m, avlb);
+
+	} while (avlb == 0);
+
+	bestMove(m);
+	delete m;
+}
+void MyBot::normalProcess() {
+	short avlb = 0;
+	short i = 0, j = 0;
+	Matrix* m;
 	m = process(previous.x, previous.y);
 	do {
 
@@ -92,28 +112,19 @@ void MyBot::easyProcess() {
 				if (status->getValue(i, j) != NULL) {
 					break;
 				}
-				i++;
 				j++;
+				if (j = status->getCols()) { i++; j = 0; }
 			}
 			m = process(i, j);
 		}
-
 	} while (avlb == 0);
 
 	bestMove(m);
-
-}
-void MyBot::normalProcess() {
-	easyProcess();
-	//analysis(prio, avlb);
-
-
+	delete m;
 }
 void MyBot::hardProcess() {
-	easyProcess();
-	//analysis(prio, avlb);
-
-
+	normalProcess();
+	
 }
 
 
